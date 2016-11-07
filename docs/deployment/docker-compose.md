@@ -31,7 +31,6 @@ Weave Cloud (hosted platform). Get a token by [registering here](http://cloud.we
 
 <!-- deploy-test-start create-infrastructure -->
 
-    docker network create mynetwork
     docker-compose up -d 
 
 <!-- deploy-test-end -->
@@ -44,26 +43,30 @@ This will send some traffic to the application, which will form the connection g
 
 You may also choose to run the following command to check the health of the deployment.
 
-<!-- deploy-test-start run-tests -->
+    curl http://localhost/health?nodes=user,catalogue,queue-master,cart,shipping,payment,orders 
 
+<!-- deploy-test-start run-tests
     sleep 60
+
     STATUS=$(curl -s -o output.txt -w "%{http_code}" http://localhost/health?nodes=user,catalogue,queue-master,cart,shipping,payment,orders)
 
-    cat output.txt | jq
+    jq -f output.txt 
 
     if [ $STATUS -ne 200 ]; then
-        echo "$(tput setaf 1)DEPLOY FAILED$(tput sgr0)"
+        echo "$(tput setaf 1)DEPLOY FAILED$(tput sgr 0)"
         exit 1
     fi
 
-<!-- deploy-test-end -->
+-->
 
 ### Cleaning up
 
 <!-- deploy-test-start destroy-infrastructure -->
 
     docker-compose down
-    docker network rm mynetwork
-    rm output.txt
    
 <!-- deploy-test-end -->
+
+<!-- deploy-test-start destroy-infrastructure 
+    rm output.txt
+-->

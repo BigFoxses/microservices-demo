@@ -2,13 +2,11 @@ version: '2'
 
 services:
   front-end:
-    image: weaveworksdemos/front-end
+    image: weaveworksdemos/front-end:snapshot
     hostname: front-end
     restart: always
     environment:
       - reschedule=on-node-failure
-    networks:
-      - mynetwork
   edge-router:
     image: weaveworksdemos/edge-router
     ports:
@@ -17,16 +15,12 @@ services:
     restart: always
     environment:
       - reschedule=on-node-failure
-    networks:
-      - mynetwork
   catalogue:
-    image: weaveworksdemos/catalogue
+    image: weaveworksdemos/catalogue:snapshot
     hostname: catalogue
     restart: always
     environment:
       - reschedule=on-node-failure
-    networks:
-      - mynetwork
   catalogue-db:
     image: weaveworksdemos/catalogue-db
     hostname: catalogue-db
@@ -36,99 +30,70 @@ services:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
       - MYSQL_DATABASE=socksdb
-    networks:
-      - mynetwork
   cart:
-    image: weaveworksdemos/cart
+    image: weaveworksdemos/cart:snapshot
     hostname: cart
     restart: always
     environment:
       - reschedule=on-node-failure
-    networks:
-      - mynetwork
   cart-db:
     image: mongo
     hostname: cart-db
     restart: always
     environment:
       - reschedule=on-node-failure
-    networks:
-      - mynetwork
   orders:
-    image: weaveworksdemos/orders
+    image: weaveworksdemos/orders:snapshot
     hostname: orders
     restart: always
     environment:
       - reschedule=on-node-failure
-    networks:
-      - mynetwork
   orders-db:
     image: mongo
     hostname: orders-db
     restart: always
     environment:
       - reschedule=on-node-failure
-    networks:
-      - mynetwork
   shipping:
-    image: weaveworksdemos/shipping
+    image: weaveworksdemos/shipping:snapshot
     hostname: shipping
     restart: always
     environment:
       - reschedule=on-node-failure
-    networks:
-      - mynetwork
   queue-master:
-    image: weaveworksdemos/queue-master
+    image: weaveworksdemos/queue-master:snapshot
     hostname: queue-master
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     restart: always
     environment:
       - reschedule=on-node-failure
-    networks:
-      - mynetwork
   rabbitmq:
     image: rabbitmq:3
     hostname: rabbitmq
     restart: always
     environment:
       - reschedule=on-node-failure
-    networks:
-      - mynetwork
   payment:
-    image: weaveworksdemos/payment
+    image: weaveworksdemos/payment:snapshot
     hostname: payment
     restart: always
     environment:
       - reschedule=on-node-failure
-    networks:
-      - mynetwork
   user:
-    image: weaveworksdemos/user
+    image: weaveworksdemos/user:snapshot
     hostname: user
     restart: always
     environment:
       - MONGO_HOST=user-db:27017
       - reschedule=on-node-failure
-    networks:
-      - mynetwork
   user-db:
     image: weaveworksdemos/user-db
     hostname: user-db
     restart: always
     environment:
       - reschedule=on-node-failure
-    networks:
-      - mynetwork
   user-sim:
     image: weaveworksdemos/load-test
     hostname: user-simulator
     command: "-d 60 -r 200 -c 2 -h edge-router"
-    networks:
-      - mynetwork
-
-networks:
-  mynetwork:
-    external:
-      name: mynetwork

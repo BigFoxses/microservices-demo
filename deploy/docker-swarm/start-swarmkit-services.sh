@@ -16,7 +16,7 @@ usage() {
     echo "  The cleanup option will remove previously launched services"
 }
 
-function command_exists() {
+command_exists() {
     command -v "$@" > /dev/null 2>&1
 }
 

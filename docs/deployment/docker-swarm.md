@@ -51,7 +51,8 @@ You may also choose to run the following command to check the health of the depl
         STATUS=$(curl -4 -s -o output.txt -w "%{http_code}" http://localhost/health?nodes=user,catalogue,cart,shipping,payment,orders)
         i=$((i+1))
     done
-    cat output.txt | jq && rm output.txt
+
+    cat output.txt 2>/dev/null | jq 2>/dev/null
 
     if [ $STATUS -ne 200 ]; then
         echo "$(tput setaf 1)DEPLOY FAILED$(tput sgr0)"
@@ -65,5 +66,6 @@ You may also choose to run the following command to check the health of the depl
 <!-- deploy-test-start destroy-infrastructure -->
 
     sh ./start-swarmkit-services.sh cleanup
+    rm output.txt
 
 <!-- deploy-test-end -->
